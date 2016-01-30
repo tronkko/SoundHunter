@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+                android:background="@android:color/black">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:id="@+id/button_start"
+        android:layout_below="@+id/gridLayout"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Set up Teams"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="4"
+        android:id="@+id/gridLayout"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:src="@drawable/hiisi"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView2"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:src="@drawable/joukahainen"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="20dp"/>
+
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_team1"
+            android:text="Hiisi"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"
+            android:textColor="@android:color/white"/>
+
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_team2"
+            android:text="Joukahainen"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_row="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_below="@+id/edit_team1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView3"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:src="@drawable/ukko"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView4"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/sampo"
+            android:scaleType="centerCrop"/>
+
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_team3"
+            android:text="Ukko"
+            android:layout_column="0"
+            android:layout_row="3"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_below="@+id/edit_team2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@android:color/white"/>
+
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_team4"
+            android:text="Sampo"
+            android:layout_column="1"
+            android:layout_row="3"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_below="@+id/edit_team3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:textColor="@android:color/white"/>
+
+    </GridLayout>
+
+</RelativeLayout>
