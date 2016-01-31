@@ -1,5 +1,7 @@
 # SoundHunter
 
+Game with physical exercise!  Listen for sounds, locate phones and run to tap a screen first.  Whoever gets most taps wins!
+
 ## Requirements
 
 The following software and hardware is required to play or develop Sound Hunter further.
