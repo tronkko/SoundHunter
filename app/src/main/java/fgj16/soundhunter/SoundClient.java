@@ -62,19 +62,6 @@ public class SoundClient {
     public void disconnect () {
         /* Exit from loop */
         mDone = true;
-
-        /* Close output buffer */
-        if (mBufferOut != null) {
-            mBufferOut.flush();
-            mBufferOut.close ();
-            mBufferOut = null;
-        }
-
-        /* Close input buffer */
-        mBufferIn = null;
-
-        /* Detach listener */
-        mListener = null;
     }
 
     /* Receive messages from server */
@@ -109,7 +96,7 @@ public class SoundClient {
 
                     /* Pass message to async thread */
                     if (msg != null  &&  mListener != null) {
-                        mListener.messageReceived(msg);
+                        mListener.messageReceived (msg);
                     }
 
                 }
@@ -119,9 +106,23 @@ public class SoundClient {
 
                 /* Timeout or server terminated unexpectedly */
                 Log.e ("TcpClient", "Error", e);
+                mListener.messageReceived ("error " + e.getMessage ());
 
             }
             finally {
+
+                /* Close input buffer */
+                mBufferIn = null;
+
+                /* Close output buffer */
+                if (mBufferOut != null) {
+                    mBufferOut.flush();
+                    mBufferOut.close ();
+                    mBufferOut = null;
+                }
+
+                /* Detach listener */
+                mListener = null;
 
                 /* Close socket due to error */
                 socket.close ();
@@ -133,6 +134,7 @@ public class SoundClient {
 
             /* Cannot resolve server address? */
             Log.e ("TcpClient", "Error", e);
+            mListener.messageReceived ("error " + e.getMessage ());
 
         }
     }

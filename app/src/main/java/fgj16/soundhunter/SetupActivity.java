@@ -56,7 +56,26 @@ public class SetupActivity extends AppCompatActivity {
         /* Prevent screen saver from activating */
         getWindow().addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        /* Get teams */
+        Team[] teams = MessageHandler.getTeams ();
+
+        /* Show team names on screen */
+        final EditText t1 = (EditText) findViewById (R.id.edit_team1);
+        t1.setText (teams[1].getName ());
+
+        final EditText t2 = (EditText) findViewById (R.id.edit_team2);
+        t2.setText (teams[2].getName ());
+
+        final EditText t3 = (EditText) findViewById (R.id.edit_team3);
+        t3.setText (teams[3].getName ());
+
+        final EditText t4 = (EditText) findViewById (R.id.edit_team4);
+        t4.setText (teams[4].getName ());
+
         /* Set current activity */
         MessageHandler.setActivity (this);
+
+        /* Play background music */
+        MessageHandler.play (R.raw.aloitusruutu, true);
     }
 }

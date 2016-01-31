@@ -26,9 +26,51 @@ public class MessageHandler extends Handler {
     /* Current media player */
     static MediaPlayer mp;
 
+    /* Keep network connection alive */
+    private KeepAlive mKeepAlive;
+
+    /* Teams in current game */
+    private Team[] mTeams;
+
+
     /* Create message handler */
     MessageHandler () {
         /* Start background thread */
+        mThread = new AsyncClient ();
+        mThread.execute ("");
+
+        /* Create timer to keep the network connection fresh */
+        mKeepAlive = new KeepAlive ();
+        mKeepAlive.sendEmptyMessageDelayed (0, 60 * 1000);
+
+        /* Reset teams */
+        mTeams = new Team[5];
+        mTeams[1] = new Team ("Hiisi");
+        mTeams[2] = new Team ("Joukahainen");
+        mTeams[3] = new Team ("Ukko");
+        mTeams[4] = new Team ("Sampo");
+    }
+
+    /* Reconnect to server */
+    static public void resetConnection () {
+        if (mHandler != null) {
+            mHandler._resetConnection ();
+        }
+    }
+    public void _resetConnection () {
+        Log.d ("MessageHandler", "resetConnection");
+        /* Terminate old thread */
+        if (mThread != null) {
+            try {
+                mThread.stop ();
+            }
+            catch (Exception e) {
+                /* FIXME: */
+                Log.d ("MessageHandler", "Error", e);
+            }
+        }
+
+        /* Create new background thread */
         mThread = new AsyncClient ();
         mThread.execute ("");
     }
@@ -81,22 +123,56 @@ public class MessageHandler extends Handler {
         /* Parse command */
         if (arr[0].equals ("start")) {
 
+            /* Silence background music from welcome screen */
+            MessageHandler.silence ();
+
             /* Show game screen */
             Intent i = new Intent (mActivity.getBaseContext(), GameActivity.class);
             mActivity.startActivity (i);
 
+            /* Close current activity */
+            mActivity.finish ();
+
         } else if (arr[0].equals ("team")) {
 
-            /* FIXME: save team data */
+            /* Get team number */
+            int teamid = Integer.parseInt (arr[1], 10);
+
+            /* Get team name */
+            String name = arr[2].replace ("+", " ");
+
+            /* Create new team */
+            mTeams[teamid] = new Team (name);
+
+        } else if (arr[0].equals ("score")) {
+
+            /* Get team number */
+            int teamid = Integer.parseInt (arr[1], 10);
+
+            /* Add score */
+            mTeams[teamid].addScore ();
+
+        } else if (arr[0].equals ("good")) {
+
+            /* Player made a correct choice */
+            MessageHandler.play (R.raw.oikein);
+
+        } else if (arr[0].equals ("boo")) {
+
+            /* 1GPlayer pressed button on non-active client */
+            MessageHandler.play (R.raw.vaarin);
 
         } else if (arr[0].equals ("stop")) {
+
+            /* Silence audio */
+            MessageHandler.silence ();
 
             /* Stop game and show results */
             Intent i = new Intent (mActivity.getBaseContext(), ResultsActivity.class);
             mActivity.startActivity (i);
 
-            /* Silence audio */
-            MessageHandler.silence ();
+            /* Close current activity */
+            mActivity.finish ();
 
         } else if (arr[0].equals ("play")) {
 
@@ -161,10 +237,23 @@ public class MessageHandler extends Handler {
             Intent i = new Intent (mActivity.getBaseContext(), SetupActivity.class);
             mActivity.startActivity (i);
 
-        } else if (arr[0].equals ("tick")) {
+            /* Close current activity */
+            mActivity.finish ();
+
+        } else if (arr[0].equals ("tick")  ||  arr[0].equals ("tack")) {
 
             /* Keep alive */
             /*NOP*/;
+
+        } else if (arr[0].equals ("error")) {
+
+            /* Show error screen  */
+            Intent i = new Intent (mActivity.getBaseContext(), ErrorActivity.class);
+            i.putExtra ("msg", msg);
+            mActivity.startActivity (i);
+
+            /* Close current activity */
+            mActivity.finish ();
 
         } else {
 
@@ -220,6 +309,14 @@ public class MessageHandler extends Handler {
         }
     }
 
+    /* Get list of teams */
+    static public Team[] getTeams () {
+        return MessageHandler.getInstance ()._getTeams ();
+    }
+    public Team[] _getTeams () {
+        return mTeams;
+    }
+
     /* Asynchronous background thread */
     private class AsyncClient extends AsyncTask<String, String, SoundClient> {
         private SoundClient mClient = null;
@@ -254,6 +351,14 @@ public class MessageHandler extends Handler {
             } else {
                 throw new Exception ("Client not ready");
             }
+        }
+
+        public void stop () throws Exception {
+            /* Tell SoundClient to exit from main loop */
+            mClient.disconnect ();
+
+            /* Close connection */
+            mClient.send ("quit");
         }
     }
 }

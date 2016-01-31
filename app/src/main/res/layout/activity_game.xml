@@ -40,7 +40,8 @@
                 android:src="@drawable/joukahainen"
                 android:scaleType="centerCrop"
                 android:layout_marginLeft="20dp"
-                android:background="@android:color/black"/>
+                android:background="@android:color/black"
+                />
 
             <TextView
                 android:layout_width="150dp"

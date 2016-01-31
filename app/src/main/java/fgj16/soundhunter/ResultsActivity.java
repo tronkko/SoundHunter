@@ -26,5 +26,8 @@ public class ResultsActivity extends AppCompatActivity {
 
         /* Set current activity */
         MessageHandler.setActivity (this);
+
+        /* Play end tune */
+        MessageHandler.play (R.raw.tulosruutu, true);
     }
 }

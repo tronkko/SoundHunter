@@ -25,7 +25,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Error"
         android:id="@+id/textView3"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
