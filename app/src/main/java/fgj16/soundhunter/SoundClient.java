@@ -11,12 +11,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by tronkko on 30.1.2016.
+ * Receive messages from server
  */
 public class SoundClient {
 
     /* Host name and port of the SoundHunter server */
-    public static final String SERVER_NAME = "192.168.1.101";
+    public static final String SERVER_NAME = "192.168.1.103";
     public static final int SERVER_PORT = 8000;
 
     /* Message handler */

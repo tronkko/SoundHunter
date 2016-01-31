@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class GameActivity extends AppCompatActivity {
+/**
+ * Gameplay
+ */
+public class GameActivity extends BaseActivity {
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -28,8 +31,6 @@ public class GameActivity extends AppCompatActivity {
             public void onClick (View v) {
                 try {
                     MessageHandler.send ("click 1");
-                    Animation shake = AnimationUtils.loadAnimation (GameActivity.this, R.anim.shake);
-                    v.startAnimation (shake);
                 } catch (Exception e) {
                     /* FIXME: */
                 }
@@ -41,8 +42,6 @@ public class GameActivity extends AppCompatActivity {
             public void onClick (View v) {
                 try {
                     MessageHandler.send ("click 2");
-                    Animation shake = AnimationUtils.loadAnimation (GameActivity.this, R.anim.shake);
-                    v.startAnimation (shake);
                 } catch (Exception e) {
                     /* FIXME: */
                 }
@@ -54,8 +53,6 @@ public class GameActivity extends AppCompatActivity {
             public void onClick (View v) {
                 try {
                     MessageHandler.send ("click 3");
-                    Animation shake = AnimationUtils.loadAnimation (GameActivity.this, R.anim.shake);
-                    v.startAnimation (shake);
                 } catch (Exception e) {
                     /* FIXME: */
                 }
@@ -67,8 +64,6 @@ public class GameActivity extends AppCompatActivity {
             public void onClick (View v) {
                 try {
                     MessageHandler.send ("click 4");
-                    Animation shake = AnimationUtils.loadAnimation (GameActivity.this, R.anim.shake);
-                    v.startAnimation (shake);
                 }
                 catch (Exception e) {
                     /* FIXME: */
@@ -92,7 +87,72 @@ public class GameActivity extends AppCompatActivity {
         final TextView tv4 = (TextView) findViewById (R.id.text_team4);
         tv4.setText (teams[4].getName ());
 
+        /* Hide score text */
+        TextView t = (TextView) findViewById(R.id.text_score);
+        t.setVisibility (View.GONE);
+
         /* Set current activity */
         MessageHandler.setActivity (this);
+    }
+
+    /* Show scoring team on screen */
+    public void score (int teamid) {
+        /* Find hidden text field */
+        TextView t = (TextView) findViewById(R.id.text_score);
+
+        /* Get name of scoring team */
+        Team[] teams = MessageHandler.getTeams ();
+        String name = teams[teamid].getName ();
+
+        /* Write team name to hidden text view */
+        t.setText (name + " scores");
+
+        /* Make the text view visible */
+        t.setVisibility (View.VISIBLE);
+
+        /* Animate text */
+        Animation anim = AnimationUtils.loadAnimation (this, R.anim.flash);
+        anim.setAnimationListener(new Animation.AnimationListener(){
+            @Override
+            public void onAnimationStart (Animation arg0) {
+            }
+            @Override
+            public void onAnimationRepeat (Animation arg0) {
+            }
+            @Override
+            public void onAnimationEnd (Animation arg0) {
+                /* Hide text view when animation completes */
+                TextView t = (TextView) findViewById(R.id.text_score);
+                t.setVisibility (View.GONE);
+            }
+        });
+        t.clearAnimation ();
+        t.startAnimation (anim);
+
+        /* Find team button */
+        ImageButton btn = null;
+        switch (teamid) {
+            case 1:
+                btn = (ImageButton) findViewById (R.id.button_1);
+                break;
+
+            case 2:
+                btn = (ImageButton) findViewById (R.id.button_2);
+                break;
+
+            case 3:
+                btn = (ImageButton) findViewById (R.id.button_3);
+                break;
+
+            case 4:
+                btn = (ImageButton) findViewById (R.id.button_4);
+                break;
+        }
+
+        /* Animate team button */
+        if (btn != null) {
+            Animation a = AnimationUtils.loadAnimation (GameActivity.this, R.anim.vanish);
+            btn.startAnimation (a);
+        }
     }
 }

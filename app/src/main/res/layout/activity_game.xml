@@ -11,7 +11,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_dark">
+        android:background="@android:color/background_dark"
+        android:id="@+id/frameLayout">
 
         <GridLayout
             android:layout_width="wrap_content"
@@ -115,4 +116,23 @@
 
         </GridLayout>
     </FrameLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hiisi scores"
+        android:id="@+id/text_score"
+        android:layout_alignParentTop="true"
+        android:textColor="#ffee00"
+        android:textAlignment="center"
+        android:textSize="48dp"
+        android:layout_alignRight="@+id/frameLayout"
+        android:layout_alignEnd="@+id/frameLayout"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:shadowColor="@android:color/black"
+        android:visibility="gone"
+        android:textStyle="bold"/>
 </RelativeLayout>

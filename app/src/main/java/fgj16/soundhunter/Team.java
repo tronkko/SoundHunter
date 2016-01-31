@@ -1,7 +1,7 @@
 package fgj16.soundhunter;
 
 /**
- * Created by tronkko on 30.1.2016.
+ * Manage team in client
  */
 public class Team {
 
@@ -10,6 +10,7 @@ public class Team {
 
     /* Current score */
     private int mScore;
+
 
     /* Create team */
     public Team (String name) {

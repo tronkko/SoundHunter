@@ -11,17 +11,17 @@ import android.util.Log;
 import java.util.Set;
 
 /**
- * Created by tronkko on 30.1.2016.
+ * Handle communication between client and server
  */
 public class MessageHandler extends Handler {
     /* Pointer to sole message handler */
     static private MessageHandler mHandler = null;
 
-    /* Asynchronous thread */
+    /* Asynchronous background thread */
     private AsyncClient mThread = null;
 
     /* Current activity */
-    static private AppCompatActivity mActivity = null;
+    static private BaseActivity mActivity = null;
 
     /* Current media player */
     static MediaPlayer mp;
@@ -58,7 +58,9 @@ public class MessageHandler extends Handler {
         }
     }
     public void _resetConnection () {
+        /* Debug */
         Log.d ("MessageHandler", "resetConnection");
+
         /* Terminate old thread */
         if (mThread != null) {
             try {
@@ -146,16 +148,20 @@ public class MessageHandler extends Handler {
 
         } else if (arr[0].equals ("score")) {
 
-            /* Get team number */
-            int teamid = Integer.parseInt (arr[1], 10);
-
             /* Add score */
-            mTeams[teamid].addScore ();
+            int teamid = Integer.parseInt (arr[1], 10);
+            if (1 <= teamid  &&  teamid <= 4) {
+                mTeams[teamid].addScore ();
+            }
 
         } else if (arr[0].equals ("good")) {
 
             /* Player made a correct choice */
+            int teamid = Integer.parseInt (arr[1], 10);
             MessageHandler.play (R.raw.oikein);
+            if (1 <= teamid  &&  teamid <= 4) {
+                mActivity.score (teamid);
+            }
 
         } else if (arr[0].equals ("boo")) {
 
@@ -233,12 +239,18 @@ public class MessageHandler extends Handler {
 
         } else if (arr[0].equals ("hello")) {
 
-            /* Show team setup */
-            Intent i = new Intent (mActivity.getBaseContext(), SetupActivity.class);
-            mActivity.startActivity (i);
+            /* Show team setup after small delay */
+            new android.os.Handler().postDelayed (
+                new Runnable () {
+                    public void run () {
+                        Intent i = new Intent (mActivity.getBaseContext (), SetupActivity.class);
+                        mActivity.startActivity (i);
 
-            /* Close current activity */
-            mActivity.finish ();
+                        /* Close current activity */
+                        mActivity.finish ();
+                    }
+                },
+            2000);
 
         } else if (arr[0].equals ("tick")  ||  arr[0].equals ("tack")) {
 
@@ -289,8 +301,8 @@ public class MessageHandler extends Handler {
         }
     }
 
-    /* Set current activity */
-    static public void setActivity (AppCompatActivity app) {
+    /* Set activity receiving messages from server */
+    static public void setActivity (BaseActivity app) {
         mActivity = app;
     }
 

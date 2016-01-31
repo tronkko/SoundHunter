@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class ErrorActivity extends AppCompatActivity {
+/**
+ * Error screen
+ */
+public class ErrorActivity extends BaseActivity {
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
